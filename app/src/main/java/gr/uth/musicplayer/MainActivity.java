@@ -4,6 +4,7 @@ package gr.uth.musicplayer;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.graphics.Color;
 import android.os.Bundle;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -13,8 +14,10 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import android.os.Environment;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -105,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
 
     void displaySongs(){
 //        final ArrayList<File> mySongs = findSong(Environment.getExternalStorageDirectory());
-        final List<File> mySongs = findSongs(findSongsFolders(Environment.getExternalStorageDirectory()));
-
+         List<File> mySongs = findSongs(findSongsFolders(Environment.getExternalStorageDirectory()));
+//mySongs = null;
         if (mySongs != null && mySongs.size() > 0) {
             String[] items = new String[mySongs.size()];
             for(int i = 0; i < mySongs.size(); i++){
@@ -114,10 +117,14 @@ public class MainActivity extends AppCompatActivity {
                         .substring(mySongs.get(i).toString().lastIndexOf("/")+1)
                         .replace(".mp3", "").replace(".wav", "");
             }
-            ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
-            listView.setAdapter(myAdapter);
+            ListView myListView = findViewById(R.id.listViewSong);
+            myListView.setVisibility(View.VISIBLE);
+
+            listView.setAdapter(new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, items));
         } else {
             // todo: implement later
+            TextView errorMessageTextView = findViewById(R.id.tv_errorMessage);
+            errorMessageTextView.setVisibility(View.VISIBLE);
         }
     }
 }
